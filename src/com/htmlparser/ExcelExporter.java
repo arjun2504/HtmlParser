@@ -41,18 +41,6 @@ public class ExcelExporter {
 			headingRow.createCell(i).setCellValue(columnHeading[i]);
 		}
 		
-//		headingRow.createCell(0).setCellValue("S.No.");
-//		headingRow.createCell(1).setCellValue("Line");
-//		headingRow.createCell(2).setCellValue("Entity ID");
-//		headingRow.createCell(3).setCellValue("Product ID");
-//		headingRow.createCell(4).setCellValue("Attribute ID");
-//		headingRow.createCell(5).setCellValue("Type");
-//		headingRow.createCell(6).setCellValue(this.reportType + " Description");
-//		headingRow.createCell(7).setCellValue("Starting Time");
-//		headingRow.createCell(8).setCellValue("Ending Time");
-//		headingRow.createCell(9).setCellValue("File Name");
-//		headingRow.createCell(10).setCellValue(reportType);
-		
 		
 		DateFormat df = new SimpleDateFormat("dd-MM-yyyy hh.mm");
 		Date date = new Date();
