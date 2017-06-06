@@ -1,17 +1,23 @@
 package com.htmlparser;
 
+import java.awt.BorderLayout;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 public class HtmlParser {
 	
-	private JFrame mainFrame;
-	private JPanel mainPanel, titlePanel, browserPanel, actionPanel;
-	private JLabel titleLabel;
+	private JFrame parserPromptWindow;
+	private JPanel mainPanel, titlePanel, htmlReaderPanel, actionPanel;
+	private JLabel titleLabel, innerTitle;
+	private JButton htmlBrowser;
 	
 	public HtmlParser() {
 		showParser();
@@ -19,16 +25,30 @@ public class HtmlParser {
 	
 	private void showParser() {
 		
-		mainFrame = new JFrame("HTML Parser");
-		
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-		
-		
-		
-		mainFrame.add(mainPanel);
-		mainFrame.setVisible(true);
-		mainFrame.setSize(600, 300);
+		parserPromptWindow = new JFrame("HTML Parser");
+        parserPromptWindow.setSize(600, 300);
+        parserPromptWindow.setLocationRelativeTo(null);
+        Border border = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+        
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBorder(border);
+        
+        titlePanel = new JPanel();
+        titlePanel.setLayout(new BorderLayout());
+        innerTitle = new JLabel("HTML Parser", SwingConstants.CENTER);
+        titlePanel.add(innerTitle, BorderLayout.NORTH);
+        
+        htmlReaderPanel = new JPanel();
+        htmlReaderPanel.setLayout(new BorderLayout());
+        htmlBrowser = new JButton();
+        htmlReaderPanel.add(htmlBrowser);
+        
+        
+        mainPanel.add(titlePanel);
+        mainPanel.add(htmlReaderPanel);
+        parserPromptWindow.add(mainPanel);
+        parserPromptWindow.setVisible(true);
 	}
 
 	public static void main(String[] args) throws IOException {

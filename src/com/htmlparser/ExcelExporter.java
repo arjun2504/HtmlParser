@@ -32,12 +32,12 @@ public class ExcelExporter {
 		sheet = workbook.createSheet();
 		headingRow = sheet.createRow(0);
 		String[] columnHeading = { "S.No.", "Line", "Entity ID", 
-				"Product ID", "Attribute ID", "Type", 
+				"Product ID", "Attribute ID", 
 				this.reportType + " Description", "Start Time",
 				"End Time", "File Name", reportType
 				};
 		
-		for(int i=0; i<11; i++) {
+		for(int i=0; i<columnHeading.length; i++) {
 			headingRow.createCell(i).setCellValue(columnHeading[i]);
 		}
 		
@@ -60,12 +60,12 @@ public class ExcelExporter {
 			row.createCell(2).setCellValue(report.getEntityId());
 			row.createCell(3).setCellValue(report.getProductId());
 			row.createCell(4).setCellValue(report.getAttributeId());
-			row.createCell(5).setCellValue(report.getReportType());
-			row.createCell(6).setCellValue(report.getDescription());
-			row.createCell(7).setCellValue(report.getStartTime());
-			row.createCell(8).setCellValue(this.endTime);
-			row.createCell(9).setCellValue(report.getFileName());
-			row.createCell(10).setCellValue(report.getStatement());
+			//row.createCell(5).setCellValue(report.getReportType());
+			row.createCell(5).setCellValue(report.getDescription());
+			row.createCell(6).setCellValue(report.getStartTime());
+			row.createCell(7).setCellValue(this.endTime);
+			row.createCell(8).setCellValue(report.getFileName());
+			row.createCell(9).setCellValue(report.getStatement());
 		
 			rowNum++;
 		}
