@@ -30,6 +30,10 @@ public class ParseEngine {
 		String warningColor = "#ffd000";
 		String color;
 		String colorMemory = "";
+		String startTime = "", endTime = "";
+		String processFileName = "";
+		
+		boolean startMetaData = true, finishMetaData = true; 
 		
 		
 		ArrayList<Report> errorList = new ArrayList<Report>();
@@ -37,7 +41,7 @@ public class ParseEngine {
 		
 		
 		ListIterator li = fontElements.listIterator();
-		int i = 0;
+		
 		
 		while(li.hasNext()) {
 			Element e = (Element) li.next();
@@ -47,9 +51,18 @@ public class ParseEngine {
 			color = e.attr("color");
 			
 			if(color.equals(errorColor) || color.equals(warningColor)) {
-				System.out.println(color);
 				colorMemory = color;
 			}
+			
+			if(startMetaData && getId(text, "meta") != null) {
+				startTime = getMask(text);
+				processFileName = getId(text, "meta");
+				System.out.println(startTime);
+				System.out.println(processFileName);
+				
+				startMetaData = false;
+			}
+			
 			
 			if(text.startsWith("Line ") && color.equals("#000000")) {
 				
@@ -66,6 +79,11 @@ public class ParseEngine {
 				if(entityId != null) report.setEntityId(entityId);
 				if(productId != null) report.setProductId(productId);
 				
+				report.setFileName(processFileName);
+				report.setStartTime(startTime);
+				report.setEndingTime(endTime);
+				report.setStatement(text);
+				
 				if(colorMemory.equals(errorColor)) {
 					report.setReportType("Error");
 					report.setDescription(description);
@@ -75,24 +93,37 @@ public class ParseEngine {
 					warningList.add(report);
 				}
 				
-				//System.out.println(text);
 				
+			} else if(finishMetaData && text.contains("Import completed (")) {
+				endTime = getMask(text);
+				System.out.println(endTime);
+				
+				finishMetaData = false;
 			}
 			
 			//if(i == 300) break;
-			i++;
+			//i++;
 		}
 		
-		ExcelExporter errorExporter = new ExcelExporter("Error");
+		ExcelExporter errorExporter = new ExcelExporter("Error", endTime);
 		errorExporter.export(errorList);
-		ExcelExporter warningExporter = new ExcelExporter("Warning");
+		ExcelExporter warningExporter = new ExcelExporter("Warning", endTime);
 		warningExporter.export(warningList);
 	}
 	
 	private String getId(String text, String type) {
 		
-		int placeholder = text.lastIndexOf(type + " with ID '");
-		int lastIndex = placeholder + type.length() + 10;
+		
+		int placeholder;
+		int lastIndex;
+		
+		if(!type.equals("meta")) {
+			placeholder = text.lastIndexOf(type + " with ID '");
+			lastIndex = placeholder + type.length() + 10;
+		} else {
+			placeholder = text.lastIndexOf("Processing the file)(s) '");
+			lastIndex = placeholder + 25;
+		}
 		
 		String attributeId = null;
 		

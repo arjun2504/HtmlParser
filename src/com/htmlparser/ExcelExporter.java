@@ -22,21 +22,37 @@ public class ExcelExporter {
 	HSSFRow headingRow;
 	String fileName;
 	String reportType;
+	String endTime;
 	
-	ExcelExporter(String reportType) {
+	ExcelExporter(String reportType, String endTime) {
 		this.reportType = reportType;
+		this.endTime = endTime;
 		
 		workbook = new HSSFWorkbook();
 		sheet = workbook.createSheet();
 		headingRow = sheet.createRow(0);
+		String[] columnHeading = { "S.No.", "Line", "Entity ID", 
+				"Product ID", "Attribute ID", "Type", 
+				this.reportType + " Description", "Start Time",
+				"End Time", "File Name", reportType
+				};
 		
-		headingRow.createCell(0).setCellValue("S.No.");
-		headingRow.createCell(1).setCellValue("Line");
-		headingRow.createCell(2).setCellValue("Entity ID");
-		headingRow.createCell(3).setCellValue("Product ID");
-		headingRow.createCell(4).setCellValue("Attribute ID");
-		headingRow.createCell(5).setCellValue("Type");
-		headingRow.createCell(6).setCellValue(this.reportType + " Description");
+		for(int i=0; i<11; i++) {
+			headingRow.createCell(i).setCellValue(columnHeading[i]);
+		}
+		
+//		headingRow.createCell(0).setCellValue("S.No.");
+//		headingRow.createCell(1).setCellValue("Line");
+//		headingRow.createCell(2).setCellValue("Entity ID");
+//		headingRow.createCell(3).setCellValue("Product ID");
+//		headingRow.createCell(4).setCellValue("Attribute ID");
+//		headingRow.createCell(5).setCellValue("Type");
+//		headingRow.createCell(6).setCellValue(this.reportType + " Description");
+//		headingRow.createCell(7).setCellValue("Starting Time");
+//		headingRow.createCell(8).setCellValue("Ending Time");
+//		headingRow.createCell(9).setCellValue("File Name");
+//		headingRow.createCell(10).setCellValue(reportType);
+		
 		
 		DateFormat df = new SimpleDateFormat("dd-MM-yyyy hh.mm");
 		Date date = new Date();
@@ -52,12 +68,16 @@ public class ExcelExporter {
 			
 			HSSFRow row = sheet.createRow(rowNum);
 			row.createCell(0).setCellValue(rowNum);
-			row.createCell(1).setCellValue(report.getLineNumber());
+			row.createCell(1).setCellValue("Line " + report.getLineNumber());
 			row.createCell(2).setCellValue(report.getEntityId());
 			row.createCell(3).setCellValue(report.getProductId());
 			row.createCell(4).setCellValue(report.getAttributeId());
 			row.createCell(5).setCellValue(report.getReportType());
 			row.createCell(6).setCellValue(report.getDescription());
+			row.createCell(7).setCellValue(report.getStartTime());
+			row.createCell(8).setCellValue(this.endTime);
+			row.createCell(9).setCellValue(report.getFileName());
+			row.createCell(10).setCellValue(report.getStatement());
 		
 			rowNum++;
 		}
