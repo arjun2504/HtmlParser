@@ -58,6 +58,7 @@ public class ExcelExporter {
 			row.createCell(4).setCellValue(report.getAttributeId());
 			row.createCell(5).setCellValue(report.getReportType());
 			row.createCell(6).setCellValue(report.getDescription());
+		
 			rowNum++;
 		}
 		

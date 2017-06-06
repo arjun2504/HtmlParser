@@ -25,36 +25,39 @@ public class ParseEngine {
 		
 		File file = new File(this.filePath);
 		Document doc = Jsoup.parse(file, "UTF-8");
-		Elements newsHeadlines = doc.select("font");
-		int errorFlag = 0;	//red
-		String errorColor = "red", warningColor = "#ffd000";
-		int warningFlag = 0;	//#ffd000
-		String color, colorMemory = "red";
+		Elements fontElements = doc.select("font");
+		String errorColor = "#ff0000";
+		String warningColor = "#ffd000";
+		String color;
+		String colorMemory = "";
 		
 		
 		ArrayList<Report> errorList = new ArrayList<Report>();
 		ArrayList<Report> warningList = new ArrayList<Report>();
 		
-		String errorType = "Error";
 		
-		ListIterator li = newsHeadlines.listIterator();
+		ListIterator li = fontElements.listIterator();
 		int i = 0;
 		
 		while(li.hasNext()) {
 			Element e = (Element) li.next();
+			
 			String text = e.text();
 			
 			color = e.attr("color");
+			
 			if(color.equals(errorColor) || color.equals(warningColor)) {
+				System.out.println(color);
 				colorMemory = color;
 			}
 			
-			if(text.startsWith("Line ")) {
+			if(text.startsWith("Line ") && color.equals("#000000")) {
 				
 				int lineNumber = getLineNumber(text);
 				String attributeId = getId(text, "attribute");
 				String entityId = getId(text, "entity");
 				String productId = getId(text, "product");
+				
 				String description = getMask(text);
 				
 				Report report = new Report();
@@ -72,12 +75,11 @@ public class ParseEngine {
 					warningList.add(report);
 				}
 				
-				
-				
+				//System.out.println(text);
 				
 			}
 			
-			if(i == 300) break;
+			//if(i == 300) break;
 			i++;
 		}
 		
@@ -131,8 +133,11 @@ public class ParseEngine {
 	
 	public String getMask(String text) {
 		Matcher m = Pattern.compile("\\(([^)]+)\\)").matcher(text);
-		m.find();
-		return m.group(1);
+		String lastDescr = null;
+		while( m.find() ) {
+			lastDescr = m.group(1);
+		}
+		return lastDescr;
 	}
 	
 }
